@@ -31,6 +31,9 @@ int sensorComErro = 0;
 bool s5_valido = false; // Necessário para a bomba
 
 void setup() {
+  Serial.begin(9600); // Inicia a comunicação com o Serial Monitor
+  Serial.println("Iniciando o Sistema da Caixa D'agua...");
+  
   iniciarPinos();
   iniciarDisplay();
   iniciarMemoria();
