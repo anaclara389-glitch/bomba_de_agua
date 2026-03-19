@@ -27,6 +27,11 @@ void processarSensores() {
   else if (s4_raw && !s3_valido) { erroSensores = true; sensorComErro = 3; } 
   else if (s5_raw && !s4_valido) { erroSensores = true; sensorComErro = 4; }
 
+  if (erroSensores) {
+    Serial.print("ALERTA: Erro detectado no sensor ");
+    Serial.println(sensorComErro);
+  }
+
   if (!erroSensores) {
     float limiteAcionado = 0.0;
     
@@ -50,5 +55,10 @@ void processarSensores() {
     }
     
     volumeAtual = novoVolume;
+    
+    Serial.print("Sensores OK | Nivel: ");
+    Serial.print(nivel);
+    Serial.print(" | Volume: ");
+    Serial.println(volumeAtual);
   }
 }
