@@ -1,5 +1,5 @@
 #include <Wire.h>
-#include <LiquidCrystal_I2C.h>
+#include <LiquidCrystal_I2C.h>       //Bibliotecas
 #include <EEPROM.h>
 #include <Servo.h>
 
@@ -28,18 +28,18 @@ unsigned long tempoAnteriorLCD = 0;
 unsigned long tempoAnteriorConsumo = 0; 
 
 void setup() {
-  setupMotorEEPROM(); // Arquivo 3
-  setupSensores();    // Arquivo 2
-  setupDisplay();     // Arquivo 1
+  setupMotorEEPROM(); // Arquivo Bomba.ino
+  setupSensores();    // Arquivo Sensores.ino
+  setupDisplay();     // Arquivo Display.ino
 }
 
 void loop() {
   unsigned long tempoAtual = millis();
   
-  lerSensores(tempoAtual);      // Arquivo 2
-  controlarBomba();             // Arquivo 3
-  salvarDados(tempoAtual);      // Arquivo 3
-  atualizarDisplay(tempoAtual); // Arquivo 1
+  lerSensores(tempoAtual);      // Arquivo Sensores.ino
+  controlarBomba();             // Arquivo Bomba.ino
+  salvarDados(tempoAtual);      // Arquivo Bomba.ino
+  atualizarDisplay(tempoAtual); // Arquivo Display.ino
   
   delay(10);
 }
