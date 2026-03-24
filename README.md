@@ -3,7 +3,7 @@
 ## 📖 Sobre o Projeto
 O projeto consiste em um sistema desenvolvido com Arduino e outros componentes eletrônicos. Seu objetivo principal é controlar o nível de um reservatório de água, monitorar em que nível a água se encontra e exibir essas informações em tempo real em um display LCD. 
 
-Este projeto foi desenvolvido por alunos do SENAI (Turma MA - 78).
+Este projeto foi desenvolvido por alunos do CentroWEG (Turma MA - 78).
 
 ## 👥 Equipe
 * Ana Clara Rodrigues Abreu
