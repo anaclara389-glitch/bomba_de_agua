@@ -1,4 +1,4 @@
-void iniciarPinos() {
+void setupSensores() {
   pinMode(PINO_S1, INPUT_PULLUP);
   pinMode(PINO_S2, INPUT_PULLUP);
   pinMode(PINO_S3, INPUT_PULLUP);
@@ -6,7 +6,7 @@ void iniciarPinos() {
   pinMode(PINO_S5, INPUT_PULLUP);
 }
 
-void processarSensores() {
+void lerSensores(unsigned long tempoAtual) {
   bool s1_raw = (digitalRead(PINO_S1) == LOW);
   bool s2_raw = (digitalRead(PINO_S2) == LOW);
   bool s3_raw = (digitalRead(PINO_S3) == LOW);
@@ -17,7 +17,7 @@ void processarSensores() {
   bool s2_valido = s1_raw && s2_raw;
   bool s3_valido = s1_raw && s2_raw && s3_raw;
   bool s4_valido = s1_raw && s2_raw && s3_raw && s4_raw;
-  s5_valido = s1_raw && s2_raw && s3_raw && s4_raw && s5_raw; // Variável global
+  bool s5_valido = s1_raw && s2_raw && s3_raw && s4_raw && s5_raw;
 
   erroSensores = false;
   sensorComErro = 0;
@@ -27,14 +27,8 @@ void processarSensores() {
   else if (s4_raw && !s3_valido) { erroSensores = true; sensorComErro = 3; } 
   else if (s5_raw && !s4_valido) { erroSensores = true; sensorComErro = 4; }
 
-  if (erroSensores) {
-    Serial.print("ALERTA: Erro detectado no sensor ");
-    Serial.println(sensorComErro);
-  }
-
   if (!erroSensores) {
     float limiteAcionado = 0.0;
-    
     if (s5_valido) { nivel = 5; porcentagem = 85; limiteAcionado = 8500.0; }
     else if (s4_valido) { nivel = 4; porcentagem = 60; limiteAcionado = 6000.0; }
     else if (s3_valido) { nivel = 3; porcentagem = 45; limiteAcionado = 4500.0; }
@@ -43,22 +37,22 @@ void processarSensores() {
     else { nivel = 0; porcentagem = 0; limiteAcionado = 0.0; }
 
     int potRaw = analogRead(PINO_POT_NIVEL);
-    float volumePot = map(potRaw, 0, 1023, 0, 8500);
+    float novoVolume = map(potRaw, 0, 1023, 0, 8500);
+    if (novoVolume > limiteAcionado) novoVolume = limiteAcionado;
 
-    float novoVolume = volumePot;
-    if (novoVolume > limiteAcionado) {
-      novoVolume = limiteAcionado;
+    volumeAtual = novoVolume; 
+
+    if (primeiraLeitura) {
+      volumeReferencia = volumeAtual; 
+      primeiraLeitura = false;
     }
 
-    if (novoVolume < volumeAtual) {
-      consumoTotal += (volumeAtual - novoVolume);
+    if (tempoAtual - tempoAnteriorConsumo >= 1000) {
+      if (!primeiraLeitura && (volumeAtual < volumeReferencia)) {
+        consumoTotal += (volumeReferencia - volumeAtual);
+      }
+      volumeReferencia = volumeAtual;
+      tempoAnteriorConsumo = tempoAtual;
     }
-    
-    volumeAtual = novoVolume;
-    
-    Serial.print("Sensores OK | Nivel: ");
-    Serial.print(nivel);
-    Serial.print(" | Volume: ");
-    Serial.println(volumeAtual);
   }
 }
