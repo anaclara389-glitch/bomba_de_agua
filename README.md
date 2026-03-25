@@ -6,9 +6,9 @@ O projeto consiste em um sistema desenvolvido com Arduino e outros componentes e
 Este projeto foi desenvolvido por alunos do CentroWEG (Turma MA - 78).
 
 ## 👥 Equipe
-* Ana Clara Rodrigues Abreu
-* Luíza da Silva
-* Matheus Scherer Jardim
+* Ana Clara Rodrigues Abreu - código da Bomba (Servo motor);
+* Luíza da Silva - código base e dos Sensores;
+* Matheus Scherer Jardim - código do Display.
 
 ## ⚙️ Funcionalidades do Sistema
 O sistema de controle de nível e consumo possui as seguintes características operacionais:
